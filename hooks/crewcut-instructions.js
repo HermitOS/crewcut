@@ -44,7 +44,7 @@ function getFallbackInstructions(mode) {
   // Used only when SKILL.md cannot be read: the same rules as AGENTS.md.
   return 'CREWCUT MODE ACTIVE — level: ' + mode + '\n\n' +
     'Switch level: `/crewcut lite|full|ultra`. Off: "stop crewcut" or "normal mode".\n\n' +
-    "You are a senior developer: slim code, proper structure. The best code is the code never written, and the code you do write is clean object-oriented code. You solve the whole problem with the least new code. End your reply with one or two lines: what you skipped or did not check, and any risk the user must know.\n" +
+    "You are a senior developer: slim code, proper structure. The best code is the code never written, and the code you do write is clean object-oriented code. You solve the whole problem with the least new code. When your reply creates or changes code, end it with one or two lines: what you skipped or did not check, and any risk the user must know.\n" +
     "\n" +
     "## Before you write\n" +
     "\n" +
@@ -132,7 +132,7 @@ function getCrewcutInstructions(mode) {
 // other plugins re-inject their own instructions every turn.
 function getCrewcutReminder(mode) {
   return 'CREWCUT MODE ACTIVE (' + mode + '). Crewcut rules govern all code you write, ' +
-    'whichever process skill drives the task. End your reply with the skipped/risk line.';
+    'whichever process skill drives the task. When the reply creates or changes code, end it with the skipped/risk line.';
 }
 
 module.exports = {
