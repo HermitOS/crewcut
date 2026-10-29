@@ -877,6 +877,21 @@ assert.equal(
   output = JSON.parse(result.stdout);
   assert.equal(output.hookSpecificOutput.hookEventName, 'UserPromptSubmit');
   assert.equal(output.hookSpecificOutput.additionalContext, getCrewcutReminder('full'));
+
+  // Cursor: the reminder arrives as additional_context, but an always-on rule
+  // owns the level and leaves the flag stale (#817), so it gets no reminder.
+  const cursorHome = path.join(temp, 'reminder-cursor-home');
+  const cursorProject = path.join(temp, 'reminder-cursor-project');
+  fs.mkdirSync(path.join(cursorHome, '.cursor'), { recursive: true });
+  fs.mkdirSync(cursorProject, { recursive: true });
+  fs.writeFileSync(path.join(cursorHome, '.cursor', '.crewcut-active'), 'ultra');
+  const cursorEnv = { HOME: cursorHome, USERPROFILE: cursorHome, CURSOR_VERSION: '3.20.17', CURSOR_PROJECT_DIR: cursorProject };
+  result = run('crewcut-mode-tracker.js', cursorEnv, JSON.stringify({ prompt: 'hi' }));
+  assert.equal(JSON.parse(result.stdout).additional_context, getCrewcutReminder('ultra'));
+  fs.mkdirSync(path.join(cursorProject, '.cursor', 'rules'), { recursive: true });
+  fs.writeFileSync(path.join(cursorProject, '.cursor', 'rules', 'crewcut.mdc'), 'rule');
+  result = run('crewcut-mode-tracker.js', cursorEnv, JSON.stringify({ prompt: 'hi' }));
+  assert.equal(result.stdout, '', 'a Cursor always-on rule must suppress the reminder');
 }
 
 // #662/#809: two Claude Code sessions in different repos keep their own mode.

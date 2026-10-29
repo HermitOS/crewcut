@@ -131,8 +131,9 @@ function finish() {
 
     // Ordinary prompt: remind the model each turn. /crewcut prompts and
     // deactivation already wrote their own output (one write per invocation).
-    // Qoder gets the full ruleset below instead.
-    if (!isQoder && !deactivated && !/^[/@$]crewcut/.test(prompt)) {
+    // Qoder gets the full ruleset below instead. A Cursor always-on rule owns
+    // the level and leaves the flag stale (#817), so it gets no reminder.
+    if (!isQoder && !(isCursor && cursorRulePath()) && !deactivated && !/^[/@$]crewcut/.test(prompt)) {
       const live = normalizeMode(readMode());
       if (live && live !== 'off') writeHookOutput('UserPromptSubmit', live, getCrewcutReminder(live));
     }
