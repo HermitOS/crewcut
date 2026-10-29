@@ -1,9 +1,12 @@
 #!/usr/bin/env bash
 # CLAUDE_CONFIG_DIR overrides ~/.claude, matching where the hooks write the flag (issue #34)
 flag="${CLAUDE_CONFIG_DIR:-$HOME/.claude}/.crewcut-active"
-[ -f "$flag" ] || exit 0
+# A symlinked flag could point the statusline at any file; ignore it.
+[ -f "$flag" ] && [ ! -L "$flag" ] || exit 0
 
-mode=$(head -n1 "$flag" | tr -d '[:space:]')
+# Keep only a-z0-9- from the first 64 bytes: the flag is printed to the
+# terminal, so stray bytes there must never become escape sequences.
+mode=$(head -c 64 "$flag" | head -n1 | tr '[:upper:]' '[:lower:]' | tr -cd 'a-z0-9-')
 
 # ultra is the high-intensity mode; flag it amber so it stands out from the
 # default green at a glance. The level is still in the text, so color is a
