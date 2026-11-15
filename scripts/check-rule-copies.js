@@ -43,6 +43,7 @@ const INVARIANTS = [
   'correct on edge cases',                 // robust-variant rule
   'Code without its check is unfinished',   // test reflex
   'Static only for pure functions',         // OO: no static services
+  'low coupling, high cohesion',           // OO: the goal behind the rules
   'no feature envy',                        // OO: methods live with their data
   'Do not reach through objects',           // OO: no message chains
   'One production implementation is reason enough', // OO: interfaces

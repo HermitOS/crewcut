@@ -57,7 +57,9 @@ This is a report the user asked for, so give it in full.
      or test. Nesting deeper than 3 levels of `if` or loops:
      flatten with guard clauses or extract a method. Split by job, never by line count, and never into helpers that
      exist only to make a function shorter.
-7. **Structure:** breaks the crewcut object-oriented rules: a static class
+7. **Structure:** check every rule in the crewcut skill's "Proper
+   object-oriented code" and "Intention-revealing code" sections. The goal
+   is low coupling and high cohesion. Examples: a static class
    that does I/O or holds state, a service created inside the class instead
    of injected, a dependency a test must replace but has no interface,
    inheritance where composition fits, a class mixing UI, I/O and logic,
@@ -66,20 +68,24 @@ This is a report the user asked for, so give it in full.
    same switch on a type or mode in several places or a method with more
    than 3 branches with real logic, where classes behind an interface fit,
    a method (often static) that mainly uses another object's data and
-   belongs in that class, public members no caller outside needs.
+   belongs in that class, a chain like `a.B.C.Do()` that reaches through
+   objects, a mutable data carrier, public members no caller outside needs.
    Name the concrete cost (cannot test it, cannot swap it).
 
 ## 3. Check before you report
 
 - Every finding needs a concrete case: "this input or situation leads to this
-  wrong result". No case, no finding.
+  wrong result". No case, no finding. For lean and structure findings,
+  the case is the cost: the test you cannot write, the class you cannot
+  swap, or the files one change must touch.
 - Re-read the lines and confirm: the caller exists, the value can really be
   empty, the code really is unused.
 - A shortcut marked with a `shortcut:` (or older `crewcut:`) comment that names its limit is a
   decision, not a finding, unless the expected load already crosses it.
 - Propose the smallest fix that works. Prefer fixes that delete code. Never
   add layers, frameworks or config the problem does not need.
-- No style taste, no "consider", no vague worries.
+- No style taste, no "consider", no vague worries. Breaking a crewcut
+  structure rule is not style taste.
 
 ## 4. Output
 

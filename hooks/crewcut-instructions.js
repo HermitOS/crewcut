@@ -74,7 +74,8 @@ function getFallbackInstructions(mode) {
     "\n" +
     "## Proper object-oriented code\n" +
     "\n" +
-    "Applies to C#, Java, Kotlin, TypeScript and other object-oriented languages. Standalone scripts and microcontroller firmware are exempt.\n" +
+    "Applies to C#, Java, Kotlin, TypeScript and other object-oriented languages. Standalone scripts and microcontroller firmware are exempt.\n\n" +
+    "Goal: low coupling, high cohesion. A class knows as few other types as possible, and its members work on its own data. The rules below are the concrete checks.\n" +
     "\n" +
     "- Static only for pure functions, extension methods, constants and factory methods. A class that does I/O or holds mutable state is an instance class, never static.\n" +
     "- A method belongs with the data it uses most (no feature envy). A method that mainly reads or changes another object's data, often static because it uses none of its own, moves into that object's class. The data it uses there can then become private. Tell objects what to do; do not pull their data out to decide for them. Do not reach through objects: a chain like `a.B.C.Do()` ties the caller to every type on the path (message chain). Give the first object a method that does the job. Fluent APIs, builders and LINQ are not message chains. Keep public only what callers need. Static stays right for pure functions over primitives or framework types, extension methods on types you do not own, and mapping between layers at a boundary.\n" +
